@@ -38,10 +38,10 @@ app.put('/livros/:id',(req, res) => {
 })
 // Excluindo um objeto pelo seu id usando o metodo Delete
 app.delete('/livros/:id',(req, res) => {
-    let {id} = req.params;
+    let {id} = req.params
     let index = buscarLivros(id)
-    livros.splice(index,1)
-    res.send('Livro apagado com sucesso!.')
+    livros.splice(index, 1)
+    res.send('Livro excluido com sucesso!.')
 })
 // função para buscar indice da array de objetos usando o metodo findIndex
 function buscarLivros(id){
