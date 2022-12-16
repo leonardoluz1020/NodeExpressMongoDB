@@ -6,3 +6,4 @@ const port = process.env.PORT || 3000; // Criando uma porta passando process.env
 app.listen(port, () => {
     console.log(`Servidor escutando em http://localhost:${port}`)// console.log para mostrar no terminal que está execuntando a porta 
 })
+ 
