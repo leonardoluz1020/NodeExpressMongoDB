@@ -23,7 +23,7 @@ app.get('/livros',(req, res) => {
 // criando rota usando o metodo get status 200 passando um objeto pelo id em formato json
 app.get('/livros/:id',(req, res) => {
     let index = buscarLivros(req.params.id);
-    res.json(livros[index]);
+    res.status(200).json(livros[index]);
 })
 // craindo uma rota metodo post para cadastrar ou criar novos objetos
 app.post('/livros',(req, res) => {
@@ -36,10 +36,17 @@ app.put('/livros/:id',(req, res) => {
     livros[index].titulo = req.body.titulo;
     res.json(livros);
 })
+// Excluindo um objeto pelo seu id usando o metodo Delete
+app.delete('/livros/:id',(req, res) => {
+    let {id} = req.params;
+    let index = buscarLivros(id)
+    livros.splice(index,1)
+    res.send('Livro apagado com sucesso!.')
+})
 // função para buscar indice da array de objetos usando o metodo findIndex
 function buscarLivros(id){
-    return  livros.findIndex(livro => livro.id == id);
-}
+    return  livros.findIndex(livro => livro.id == id);// [{id:0},{id:1},{id:2}]
+} 
 
 
 
