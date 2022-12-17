@@ -1,9 +1,7 @@
-import app from "./src/app.js"; // importando app.js
+import app from './src/app2.js';
+const port = process.env.PORT || 3000;
 
-const port = process.env.PORT || 3000; // Criando uma porta passando process.env.PORT ou 3000
-
-// Utilizaando o app.listen para escutar a porta 
 app.listen(port, () => {
-    console.log(`Servidor escutando em http://localhost:${port}`)// console.log para mostrar no terminal que está execuntando a porta 
+    console.log(`Escutando servidor em http://localhost:${port}`);
 })
- 
+

@@ -1,49 +1,48 @@
-import express from 'express'
+import express from 'express';
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
-const livros = [
-    { id: 0, "titulo": "Eu sou a lenda" },
-    { id: 1, "titulo": "Passageiros" },
-    { id: 2, "titulo": "Wednesday"},
-]
+const series = [
+    { id: 1, "titulo": "the witcher" },
+    { id: 2, "titulo": "Supernatural" },
+    { id: 3, "titulo": "Game of thrones" }
 
-app.get('/',(req, res) => {
-    res.status(200).send('Curso de Node ALURA')
+];
+
+// rota method get '/' acessando tela inicial do recurso
+app.get('/', (req, res) => {
+    res.status(200).send('Welcome to world series');
+})
+// rota method get '/series acessando tela de series do recurso
+app.get('/series', (req, res) => {
+    res.status(200).json(series);
+})
+// rota method get '/series/:id acessando tela com a serie escolhida no recurso
+app.get('/series/:id', (req, res) => {
+    let index = buscarSerie(req.params.id);
+    res.json(series[index]);
+})
+// rota method post '/series craindo nova serie 
+app.post('/series', (req, res) => {
+    series.push(req.body);
+    res.send('Serie incluida com sucesso!.');
+})
+// rota method put '/series/:id modificando serie 
+app.put('/series/:id', (req, res) => {
+    let index = buscarSerie(req.params.id);
+    series[index].titulo = req.body.titulo;
+    res.send('Serie alterada com sucesso!.');
+})
+// rota method delete '/series/:id excluindo serie selecionada
+app.delete('/series/:id', (req, res) => {
+    let index = buscarSerie(req.params.id);
+    series.splice(index, 1);
+    res.send('Serie excluida com sucesso!.');
 })
 
-app.get('/livros',(req, res) => {
-    res.status(200).json(livros)
-})
-
-app.get('/livros/:id',(req, res) => {
-    let {id} = req.params
-    let index = buscaLivro(id)
-    res.status(200).json(livros[index])
-})
-
-app.post('/livros', (req, res) => {
-    livros.push(req.body)
-    res.status(201).send('Livro cadastrado com sucesso!.')
-})
-
-app.put('/livros/:id', (req, res) => {
-    let {id} = req.params
-    let index = buscaLivro(id)
-    livros[index].titulo = req.body.titulo
-    res.send('Titulo modificado com sucesso!.')
-})
-
-app.delete('/livros/:id', (req, res) => {
-    let {id} = req.params;
-    let index = buscaLivro(id);
-    livros.splice(index,1);
-    res.send('Livro excluido com sucesso');
-})
-
-function buscaLivro(id){
-    return livros.findIndex(livro => livro.id == id);
+function buscarSerie(id) {
+    return series.findIndex(serie => serie.id == id);
 }
 
 export default app;
