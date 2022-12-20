@@ -23,11 +23,7 @@ app.get('/livros/:id', (req, res) => {
     let index = buscarLivros(req.params.id);
     res.status(200).json(livros[index]);
 })
-// craindo uma rota metodo post para cadastrar ou criar novos objetos
-app.post('/livros', (req, res) => {
-    livros.push(req.body);
-    res.status(201).send('Livro cadastrado com sucesso')
-})
+
 // Modificando um objeto pelo seu id usando o metodo put
 app.put('/livros/:id', (req, res) => {
     let index = buscarLivros(req.params.id);
