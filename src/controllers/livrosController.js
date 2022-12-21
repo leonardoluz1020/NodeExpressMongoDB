@@ -4,7 +4,7 @@ class LivroController {
     static listarLivros = (req, res) => {
         livros.find()
             .populate('autor')
-            .populate('editora')
+            //.populate('editora')
             .exec((err, livros) => {
                 res.status(200).json(livros)
             })
@@ -12,8 +12,8 @@ class LivroController {
     static listarLivroPorId = (req, res) => {
         const id = req.params.id
         livros.findById(id)
-            .populate('autor', 'nome')
-            .populate('editora','nome')
+            .populate('autor')
+           // .populate('editora','nome')
             .exec((err, livros) => {
                 if (err) {
                     res.status(400).send({ message: `${err.message} - id do livro não localizado.` })
@@ -28,7 +28,7 @@ class LivroController {
             if (err) {
                 res.status(500).send({ message: `${err.message} - falha ao cadastrar livro.` });
             } else {
-                res.status(201).send(livro.toJSON());
+                res.status(201).send('Livro cadastrado com sucesso!.');
             }
         })
     }
@@ -49,6 +49,18 @@ class LivroController {
                 res.status(200).send({ message: 'Livro removido com sucesso' })
             } else {
                 res.status(500).send({ message: err.message });
+            }
+        })
+    }
+    static listarLivroPorEditora = (req, res) => {
+        
+        const editora = req.query.editora
+
+        livros.find({'editora': editora},{},(err, livros) => {
+            if(!err){
+                res.status(200).send(livros);
+            }else{
+                res.send('Não foi possivel encontrar a editora!.')
             }
         })
     }
