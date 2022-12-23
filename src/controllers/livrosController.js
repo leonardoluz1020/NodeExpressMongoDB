@@ -13,7 +13,6 @@ class LivroController {
         const id = req.params.id
         livros.findById(id)
             .populate('autor')
-           // .populate('editora','nome')
             .exec((err, livros) => {
                 if (err) {
                     res.status(400).send({ message: `${err.message} - id do livro não localizado.` })
