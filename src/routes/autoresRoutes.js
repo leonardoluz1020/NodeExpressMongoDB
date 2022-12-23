@@ -5,6 +5,7 @@ const router = express.Router();
 
 router
    .get('/autores', AutorController.listarAutores)
+   .get('/autores/busca', AutorController.listarAutorPornome)
    .get('/autores/:id',AutorController.listarAutorPorId)
    .post('/autores',AutorController.cadastrarAutor)
    .put('/autores/:id', AutorController.atualizarAutor)

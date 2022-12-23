@@ -47,6 +47,16 @@ class AutorController {
             }
         })
     }
+    static listarAutorPornome = (req, res) => {
+        const nome = req.query.nome
+        autores.find({'nome': nome },{},(err, autores) => {
+            if(!err){
+                res.status(201).send(autores)
+            }else{
+                res.status(400).send(`Erro na busca por nome de autor`)
+            }
+        })
+    }
 }
 
 export default AutorController;
