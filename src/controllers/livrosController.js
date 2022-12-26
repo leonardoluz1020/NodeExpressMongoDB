@@ -1,6 +1,7 @@
 import livros from "../models/Livro.js";
 
 class LivroController {
+    // read - leitura de dados
     static listarLivros = (req, res) => {
         livros.find()
             .populate('autor')
@@ -21,6 +22,19 @@ class LivroController {
                 }
             })
     }
+    static listarLivroPorEditora = (req, res) => {
+
+        const editora = req.query.editora
+
+        livros.find({ 'editora': editora }, {}, (err, livros) => {
+            if (!err) {
+                res.status(200).send(livros);
+            } else {
+                res.send('Não foi possivel encontrar a editora!.')
+            }
+        })
+    }
+    // create - criar dados
     static cadastrarLivro = (req, res) => {
         let livro = new livros(req.body);
         livro.save((err) => {
@@ -31,9 +45,20 @@ class LivroController {
             }
         })
     }
-    static atualizarLivro = (req, res) => {
-        const id = req.params.id;
-        livros.findByIdAndUpdate(id, { $set: req.body }, (err) => {
+    static adicionarAutorPorId = (req, res) => {
+        const id = req.params.id
+        livros.findByIdAndUpdate(id, { $push: req.body }, (err, livros) => {
+            if (!err) {
+                res.status(201).send('Autor adicionado com sucesso!.')
+            } else {
+                res.status(500).send({ message: `${err.message} - falha ao cadastrar autor` })
+            }
+        })
+    }
+    // Update - atualização de dados
+    static atualizarLivroPorTitulo = (req, res) => {
+        const titulo = req.query.titulo;
+        livros.findOneAndUpdate({'titulo':titulo}, { $set: req.body }, (err, livros) => {
             if (!err) {
                 res.status(200).send({ message: 'Livro atualizado com sucesso' });
             } else {
@@ -41,6 +66,7 @@ class LivroController {
             }
         })
     }
+    // Delete - deletar dados
     static excluirLivro = (req, res) => {
         const id = req.params.id
         livros.findByIdAndDelete(id, (err) => {
@@ -51,18 +77,9 @@ class LivroController {
             }
         })
     }
-    static listarLivroPorEditora = (req, res) => {
+    static excluirAutorPortituloDeLivro = (req, res) => {
         
-        const editora = req.query.editora
-
-        livros.find({'editora': editora},{},(err, livros) => {
-            if(!err){
-                res.status(200).send(livros);
-            }else{
-                res.send('Não foi possivel encontrar a editora!.')
-            }
-        })
-    }
+    }    
 }
 
 export default LivroController;
