@@ -1,6 +1,17 @@
 import livros from "../models/Livro.js";
 
 class LivroController {
+    // Create - criar dados
+    static cadastrarLivro = (req, res) => {
+        let livro = new livros(req.body);
+        livro.save((err) => {
+            if (err) {
+                res.status(500).send({ message: `${err.message} - falha ao cadastrar livro.` });
+            } else {
+                res.status(201).send('Livro cadastrado com sucesso!.');
+            }
+        })
+    }
     // read - leitura de dados
     static listarLivros = (req, res) => {
         livros.find()
@@ -25,8 +36,10 @@ class LivroController {
     static listarLivroPorEditora = (req, res) => {
 
         const editora = req.query.editora
+        livros.find({ 'editora': editora })
+        .populate('autor','nome')
 
-        livros.find({ 'editora': editora }, {}, (err, livros) => {
+        .exec({}, (err, livros) => {
             if (!err) {
                 res.status(200).send(livros);
             } else {
@@ -34,31 +47,10 @@ class LivroController {
             }
         })
     }
-    // create - criar dados
-    static cadastrarLivro = (req, res) => {
-        let livro = new livros(req.body);
-        livro.save((err) => {
-            if (err) {
-                res.status(500).send({ message: `${err.message} - falha ao cadastrar livro.` });
-            } else {
-                res.status(201).send('Livro cadastrado com sucesso!.');
-            }
-        })
-    }
-    static adicionarAutorPorId = (req, res) => {
-        const id = req.params.id
-        livros.findByIdAndUpdate(id, { $push: req.body }, (err, livros) => {
-            if (!err) {
-                res.status(201).send('Autor adicionado com sucesso!.')
-            } else {
-                res.status(500).send({ message: `${err.message} - falha ao cadastrar autor` })
-            }
-        })
-    }
     // Update - atualização de dados
-    static atualizarLivroPorTitulo = (req, res) => {
-        const titulo = req.query.titulo;
-        livros.findOneAndUpdate({'titulo':titulo}, { $set: req.body }, (err, livros) => {
+    static atualizarLivroPorId = (req, res) => {
+        const id = req.params.id;
+        livros.findByIdAndUpdate(id, { $set: req.body }, (err, livros) => {
             if (!err) {
                 res.status(200).send({ message: 'Livro atualizado com sucesso' });
             } else {
@@ -76,9 +68,6 @@ class LivroController {
                 res.status(500).send({ message: err.message });
             }
         })
-    }
-    static excluirAutorPortituloDeLivro = (req, res) => {
-        
     }    
 }
 

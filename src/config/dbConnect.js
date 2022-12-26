@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'; // impotando o pacote mongoose para o projeto
-import dotenv from 'dotenv';
+import dotenv from 'dotenv';// usando o dotenv
 dotenv.config();
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = encodeURIComponent(process.env.DB_PASSWORD);
